@@ -4,6 +4,17 @@ import 'ui/flutter_cookie_consent_banner.dart';
 import 'ui/cookie_settings_dialog.dart';
 
 /// Represents the position where the cookie consent banner should be displayed.
+///
+/// The banner can be positioned either at the top or bottom of the screen.
+/// This affects both the visual appearance and the user experience.
+///
+/// Example:
+/// ```dart
+/// CookieConsentBanner(
+///   position: BannerPosition.bottom,
+///   // ... other properties
+/// )
+/// ```
 enum BannerPosition {
   /// Banner appears at the top of the screen
   top,
@@ -19,6 +30,21 @@ enum BannerPosition {
 /// - Display a cookie consent banner
 /// - Save user preferences
 /// - Check consent status
+///
+/// Example:
+/// ```dart
+/// final cookieConsent = FlutterCookieConsent();
+/// await cookieConsent.initialize();
+///
+/// if (cookieConsent.shouldShowBanner) {
+///   // Show the banner
+///   cookieConsent.createBanner(
+///     context: context,
+///     title: 'Cookie Consent',
+///     message: 'We use cookies...',
+///   );
+/// }
+/// ```
 class FlutterCookieConsent {
   static final FlutterCookieConsent _instance =
       FlutterCookieConsent._internal();
@@ -117,12 +143,36 @@ class FlutterCookieConsent {
 
   /// Creates and returns a cookie consent banner widget.
   ///
-  /// The banner can be customized with:
-  /// - Title and message text
-  /// - Button labels
-  /// - Visual style
-  /// - Position (top or bottom)
-  /// - Callback functions for user actions
+  /// The banner can be customized with various properties:
+  /// - [title]: The main heading of the banner
+  /// - [message]: The descriptive text explaining cookie usage
+  /// - [acceptButtonText]: Text for the accept button
+  /// - [declineButtonText]: Text for the decline button
+  /// - [settingsButtonText]: Text for the settings button
+  /// - [showSettings]: Whether to show the settings button
+  /// - [style]: Custom styling for the banner
+  /// - [position]: Where to display the banner (top or bottom)
+  ///
+  /// Example:
+  /// ```dart
+  /// cookieConsent.createBanner(
+  ///   context: context,
+  ///   title: 'Cookie Consent',
+  ///   message: 'We use cookies to enhance your experience...',
+  ///   acceptButtonText: 'Accept All',
+  ///   declineButtonText: 'Decline',
+  ///   settingsButtonText: 'Settings',
+  ///   showSettings: true,
+  ///   position: BannerPosition.bottom,
+  ///   style: CookieConsentStyle(
+  ///     backgroundColor: Colors.white,
+  ///     textColor: Colors.black,
+  ///   ),
+  ///   onAccept: (preferences) {
+  ///     print('Accepted preferences: $preferences');
+  ///   },
+  /// );
+  /// ```
   Widget createBanner({
     required BuildContext context,
     String? title,
@@ -174,6 +224,16 @@ class FlutterCookieConsent {
   }
 }
 
+/// A widget that displays a cookie consent banner.
+///
+/// This is an internal implementation of the cookie consent banner.
+/// Use [FlutterCookieConsent.createBanner] to create and display the banner.
+///
+/// The banner includes:
+/// - A title and message explaining cookie usage
+/// - Accept and decline buttons
+/// - An optional settings button
+/// - Customizable styling
 class _CookieConsentBanner extends StatefulWidget {
   final String title;
   final String message;
@@ -205,6 +265,9 @@ class _CookieConsentBanner extends StatefulWidget {
   State<_CookieConsentBanner> createState() => _CookieConsentBannerState();
 }
 
+/// The state class for [_CookieConsentBanner].
+///
+/// Manages the visibility state of the banner and handles user interactions.
 class _CookieConsentBannerState extends State<_CookieConsentBanner> {
   late final ValueNotifier<bool> _bannerVisibilityNotifier;
 

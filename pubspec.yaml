@@ -1,7 +1,17 @@
 name: flutter_cookie_consent
 description: "Flutter Cookie Consent UI"
 version: 0.0.1
-homepage:
+homepage: https://github.com/redhotsixbull/flutter_cookie_consent
+repository: https://github.com/redhotsixbull/flutter_cookie_consent.git
+documentation: https://github.com/redhotsixbull/flutter_cookie_consent#readme
+topics:
+  - flutter
+  - cookie
+  - consent
+  - gdpr
+  - privacy
+  - web
+  - ui
 
 environment:
   sdk: ^3.6.0

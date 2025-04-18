@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cookie_consent/flutter_cookie_consent.dart';
 import 'package:flutter_cookie_consent/ui/cookie_settings_dialog.dart';
+import 'package:flutter_cookie_consent/ui/flutter_cookie_consent_banner.dart';
 
 class CookieExamplePage extends StatefulWidget {
   const CookieExamplePage({super.key});
@@ -12,6 +13,14 @@ class CookieExamplePage extends StatefulWidget {
 class _CookieExamplePageState extends State<CookieExamplePage> {
   final FlutterCookieConsent _cookieConsent = FlutterCookieConsent();
   late final Future<void> _initFuture;
+
+  // State variables for style adjustment
+  bool _useCustomStyle = false;
+  Color _backgroundColor = Colors.white;
+  Color _textColor = Colors.black;
+  Color _buttonColor = Colors.blue;
+  Color _buttonTextColor = Colors.white;
+  double _padding = 16.0;
 
   @override
   void initState() {
@@ -60,29 +69,242 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
               ),
             ],
           ),
-          body: Stack(
+          body: Column(
             children: [
-              const Center(
-                child: Text(
-                  'Welcome to our app!',
-                  style: TextStyle(fontSize: 24),
+              // Style adjustment section
+              Card(
+                margin: const EdgeInsets.all(16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Style Settings',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SwitchListTile(
+                        title: const Text('Use Custom Style'),
+                        value: _useCustomStyle,
+                        onChanged: (value) {
+                          setState(() {
+                            _useCustomStyle = value;
+                          });
+                        },
+                      ),
+                      if (_useCustomStyle) ...[
+                        const SizedBox(height: 8),
+                        _buildColorPicker(
+                          'Background Color',
+                          _backgroundColor,
+                          (color) => setState(() => _backgroundColor = color),
+                        ),
+                        _buildColorPicker(
+                          'Text Color',
+                          _textColor,
+                          (color) => setState(() => _textColor = color),
+                        ),
+                        _buildColorPicker(
+                          'Button Color',
+                          _buttonColor,
+                          (color) => setState(() => _buttonColor = color),
+                        ),
+                        _buildColorPicker(
+                          'Button Text Color',
+                          _buttonTextColor,
+                          (color) => setState(() => _buttonTextColor = color),
+                        ),
+                        const SizedBox(height: 8),
+                        _buildSlider(
+                          'Padding',
+                          _padding,
+                          8.0,
+                          32.0,
+                          (value) => setState(() => _padding = value),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
               ),
-              _cookieConsent.createBanner(
-                context: context,
-                title: 'Cookie Settings',
-                message:
-                    'We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept", you consent to our use of cookies.',
-                acceptButtonText: 'Accept',
-                declineButtonText: 'Decline',
-                settingsButtonText: 'Settings',
-                showSettings: true,
-                position: BannerPosition.top,
+              // Main content
+              Expanded(
+                child: Stack(
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Welcome to our app!',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                    _cookieConsent.createBanner(
+                      context: context,
+                      title: 'Cookie Settings',
+                      message:
+                          'We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept", you consent to our use of cookies.',
+                      acceptButtonText: 'Accept',
+                      declineButtonText: 'Decline',
+                      settingsButtonText: 'Settings',
+                      showSettings: true,
+                      position: BannerPosition.top,
+                      style: _useCustomStyle
+                          ? CookieConsentStyle(
+                              backgroundColor: _backgroundColor,
+                              titleStyle: TextStyle(
+                                color: _textColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              messageStyle: TextStyle(
+                                color: _textColor,
+                                fontSize: 14,
+                              ),
+                              acceptButtonStyle: ButtonStyle(
+                                backgroundColor:
+                                    WidgetStateProperty.all(_buttonColor),
+                                foregroundColor:
+                                    WidgetStateProperty.all(_buttonTextColor),
+                              ),
+                              declineButtonStyle: ButtonStyle(
+                                backgroundColor:
+                                    WidgetStateProperty.all(_buttonColor),
+                                foregroundColor:
+                                    WidgetStateProperty.all(_buttonTextColor),
+                              ),
+                              settingsButtonStyle: ButtonStyle(
+                                backgroundColor:
+                                    WidgetStateProperty.all(_buttonColor),
+                                foregroundColor:
+                                    WidgetStateProperty.all(_buttonTextColor),
+                              ),
+                              contentPadding: EdgeInsets.all(_padding),
+                              spacingBetweenElements: _padding / 2,
+                            )
+                          : null,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildColorPicker(
+      String label, Color color, ValueChanged<Color> onChanged) {
+    return ListTile(
+      title: Text(label),
+      trailing: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: color,
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      onTap: () async {
+        final newColor = await showDialog<Color>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Select $label'),
+            content: SingleChildScrollView(
+              child: ColorPicker(
+                pickerColor: color,
+                onColorChanged: onChanged,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        if (newColor != null) {
+          onChanged(newColor);
+        }
+      },
+    );
+  }
+
+  Widget _buildSlider(
+    String label,
+    double value,
+    double min,
+    double max,
+    ValueChanged<double> onChanged,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label),
+        Slider(
+          value: value,
+          min: min,
+          max: max,
+          divisions: 20,
+          label: value.toStringAsFixed(1),
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+}
+
+// Simple color picker widget
+class ColorPicker extends StatelessWidget {
+  final Color pickerColor;
+  final ValueChanged<Color> onColorChanged;
+
+  const ColorPicker({
+    super.key,
+    required this.pickerColor,
+    required this.onColorChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        Colors.red,
+        Colors.orange,
+        Colors.yellow,
+        Colors.green,
+        Colors.blue,
+        Colors.indigo,
+        Colors.purple,
+        Colors.pink,
+        Colors.brown,
+        Colors.grey,
+        Colors.black,
+        Colors.white,
+      ].map((color) {
+        return GestureDetector(
+          onTap: () => onColorChanged(color),
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: color,
+              border: Border.all(
+                color: color == pickerColor ? Colors.black : Colors.grey,
+                width: color == pickerColor ? 3 : 1,
+              ),
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }

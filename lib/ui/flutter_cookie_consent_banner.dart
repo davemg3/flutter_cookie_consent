@@ -83,7 +83,10 @@ class _FlutterCookieConsentBannerState
   Widget build(BuildContext context) {
     return Container(
       padding: widget.style.contentPadding,
-      color: widget.style.backgroundColor ?? Colors.grey[200],
+      decoration: BoxDecoration(
+        color: widget.style.backgroundColor ?? Colors.grey[200],
+        borderRadius: BorderRadius.circular(8.0),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
