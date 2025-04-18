@@ -14,7 +14,7 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
   final FlutterCookieConsent _cookieConsent = FlutterCookieConsent();
   late final Future<void> _initFuture;
 
-  // State variables for style adjustment
+  // 스타일 조절을 위한 상태 변수들
   bool _useCustomStyle = false;
   Color _backgroundColor = Colors.white;
   Color _textColor = Colors.black;
@@ -71,7 +71,7 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
           ),
           body: Column(
             children: [
-              // Style adjustment section
+              // 스타일 조절 섹션
               Card(
                 margin: const EdgeInsets.all(16),
                 child: Padding(
@@ -80,7 +80,7 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Style Settings',
+                        '스타일 설정',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
                       ),
                       const SizedBox(height: 16),
                       SwitchListTile(
-                        title: const Text('Use Custom Style'),
+                        title: const Text('커스텀 스타일 사용'),
                         value: _useCustomStyle,
                         onChanged: (value) {
                           setState(() {
@@ -99,28 +99,28 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
                       if (_useCustomStyle) ...[
                         const SizedBox(height: 8),
                         _buildColorPicker(
-                          'Background Color',
+                          '배경색',
                           _backgroundColor,
                           (color) => setState(() => _backgroundColor = color),
                         ),
                         _buildColorPicker(
-                          'Text Color',
+                          '텍스트 색상',
                           _textColor,
                           (color) => setState(() => _textColor = color),
                         ),
                         _buildColorPicker(
-                          'Button Color',
+                          '버튼 색상',
                           _buttonColor,
                           (color) => setState(() => _buttonColor = color),
                         ),
                         _buildColorPicker(
-                          'Button Text Color',
+                          '버튼 텍스트 색상',
                           _buttonTextColor,
                           (color) => setState(() => _buttonTextColor = color),
                         ),
                         const SizedBox(height: 8),
                         _buildSlider(
-                          'Padding',
+                          '여백',
                           _padding,
                           8.0,
                           32.0,
@@ -131,7 +131,7 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
                   ),
                 ),
               ),
-              // Main content
+              // 메인 콘텐츠
               Expanded(
                 child: Stack(
                   children: [
@@ -213,7 +213,7 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
         final newColor = await showDialog<Color>(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Select $label'),
+            title: Text('$label 선택'),
             content: SingleChildScrollView(
               child: ColorPicker(
                 pickerColor: color,
@@ -223,7 +223,7 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+                child: const Text('확인'),
               ),
             ],
           ),
@@ -259,7 +259,7 @@ class _CookieExamplePageState extends State<CookieExamplePage> {
   }
 }
 
-// Simple color picker widget
+// 간단한 색상 선택 위젯
 class ColorPicker extends StatelessWidget {
   final Color pickerColor;
   final ValueChanged<Color> onColorChanged;

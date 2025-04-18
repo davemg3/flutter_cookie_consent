@@ -13,7 +13,7 @@ A Flutter plugin for displaying cookie consent banners and managing cookie prefe
 - Customizable banner position (top or bottom)
 - Settings dialog for detailed cookie preferences
 - Persistent storage of user preferences
-- Platform-specific implementations (Web, Android, iOS)
+- Web platform implementation
 - Dark mode support
 - Localization support
 - Customizable animations
@@ -24,11 +24,11 @@ A Flutter plugin for displaying cookie consent banners and managing cookie prefe
 | Platform | Support |
 |----------|---------|
 | Web      | ✅      |
-| Android  | ✅      |
-| iOS      | ✅      |
-| Windows  | ✅      |
-| macOS    | ✅      |
-| Linux    | ✅      |
+| Android  | ❌      |
+| iOS      | ❌      |
+| Windows  | ❌      |
+| macOS    | ❌      |
+| Linux    | ❌      |
 
 ## Installation
 
@@ -175,65 +175,4 @@ The main class for managing cookie consent.
 ### BannerPosition
 
 Enum for specifying banner position:
-- `top`: Display banner at the top of the screen
-- `bottom`: Display banner at the bottom of the screen
-
-## Localization
-
-The plugin supports multiple languages. To add a new language, create a new file in the `lib/l10n` directory following the naming convention `cookie_consent_<language_code>.arb`.
-
-Example:
-```json
-{
-  "cookieConsentTitle": "Cookie Consent",
-  "cookieConsentMessage": "We use cookies to enhance your experience...",
-  "acceptButtonText": "Accept All",
-  "declineButtonText": "Decline",
-  "settingsButtonText": "Settings"
-}
-```
-
-## Contributing
-
-We welcome contributions! Here's how you can help:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-Please make sure to:
-- Follow the [Dart style guide](https://dart.dev/guides/language/effective-dart/style)
-- Write tests for new features
-- Update the documentation
-- Update the CHANGELOG.md
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Banner not showing**
-   - Make sure you've initialized the consent manager
-   - Check if `shouldShowBanner` is true
-   - Verify that the banner is properly added to your widget tree
-
-2. **Preferences not saving**
-   - Check if you have proper storage permissions
-   - Verify that the storage implementation is working correctly
-
-3. **Localization not working**
-   - Ensure the language code is supported
-   - Check if the localization files are properly formatted
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-If you encounter any issues or have questions, please:
-- Open an issue on GitHub
-- Check the [documentation](https://github.com/redhotsixbull/flutter_cookie_consent#readme)
-- Join our [Discord community](https://discord.gg/your-discord-link)
-
+- `
