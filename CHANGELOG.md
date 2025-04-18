@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2025-04-18
 
 ### Added
 - Initial release of Flutter Cookie Consent
@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced performance and memory usage
 - Optimized storage implementation
 - Updated dependencies to latest versions
+- Converted all UI text and comments to English
 
 ### Fixed
 - Fixed banner positioning issues on some devices
@@ -39,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added data encryption for sensitive information
 - Enhanced privacy protection measures
 
-## [0.0.1] - 2024-04-18
+## [0.0.1] - 2025-04-18
 
 ### Added
 - Initial project setup

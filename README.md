@@ -36,7 +36,7 @@ Add the following to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_cookie_consent: ^0.0.1
+  flutter_cookie_consent: ^1.0.0
 ```
 
 Then run:
@@ -48,7 +48,7 @@ flutter pub get
 
 | Flutter Version | Package Version |
 |----------------|-----------------|
-| >=3.3.0        | ^0.0.1         |
+| >=3.3.0        | ^1.0.0         |
 
 ## Usage
 

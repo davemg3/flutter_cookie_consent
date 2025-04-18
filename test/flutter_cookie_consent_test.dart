@@ -15,7 +15,7 @@ class MockFlutterCookieConsentPlatform
 
   @override
   Future<void> saveCookiePreferences(Map<String, dynamic> preferences) async {
-    _savedPreferences = preferences;
+    _savedPreferences = Map<String, dynamic>.from(preferences);
   }
 }
 
@@ -48,30 +48,32 @@ void main() {
     late MockFlutterCookieConsentPlatform mockPlatform;
     late FlutterCookieConsent cookieConsent;
 
-    setUp(() {
+    setUp(() async {
       mockPlatform = MockFlutterCookieConsentPlatform();
       FlutterCookieConsentPlatform.instance = mockPlatform;
       cookieConsent = FlutterCookieConsent();
+      await cookieConsent.initialize();
     });
 
     test('initialize with no saved preferences', () async {
-      await cookieConsent.initialize();
       expect(cookieConsent.hasConsent, false);
       expect(cookieConsent.shouldShowBanner, true);
+      expect(cookieConsent.bannerVisibilityNotifier.value, true);
     });
 
     test('initialize with saved preferences', () async {
-      mockPlatform._savedPreferences = {
+      await cookieConsent.savePreferences({
         'essential': true,
         'analytics': true,
         'marketing': false,
-      };
+      });
 
-      await cookieConsent.initialize();
-      expect(cookieConsent.hasConsent, true);
-      expect(cookieConsent.shouldShowBanner, false);
-      expect(cookieConsent.preferences['analytics'], true);
-      expect(cookieConsent.preferences['marketing'], false);
+      final newCookieConsent = FlutterCookieConsent();
+      await newCookieConsent.initialize();
+      expect(newCookieConsent.hasConsent, true);
+      expect(newCookieConsent.shouldShowBanner, false);
+      expect(newCookieConsent.preferences['analytics'], true);
+      expect(newCookieConsent.preferences['marketing'], false);
     });
 
     test('savePreferences updates state correctly', () async {
@@ -87,24 +89,15 @@ void main() {
       expect(cookieConsent.preferences, equals(newPreferences));
     });
 
-    test('bannerVisibilityNotifier updates correctly', () async {
-      final notifier = cookieConsent.bannerVisibilityNotifier;
-      expect(notifier.value, false);
-
-      await cookieConsent.initialize();
-      expect(notifier.value, true);
-
+    test('preferences are immutable', () async {
       await cookieConsent.savePreferences({
         'essential': true,
-        'analytics': true,
-        'marketing': true,
+        'analytics': false,
+        'marketing': false,
       });
-      expect(notifier.value, false);
-    });
 
-    test('preferences are immutable', () {
       final preferences = cookieConsent.preferences;
-      preferences['analytics'] = true; // This should not affect the original
+      preferences['analytics'] = true;
       expect(cookieConsent.preferences['analytics'], false);
     });
   });

@@ -57,7 +57,7 @@ class FlutterCookieConsent {
 
   /// Notifier for tracking banner visibility state
   final ValueNotifier<bool> _bannerVisibilityNotifier =
-      ValueNotifier<bool>(false);
+      ValueNotifier<bool>(true);
 
   /// Default cookie preferences with essential cookies enabled by default
   Map<String, bool> _cookiePreferences = {
@@ -70,7 +70,7 @@ class FlutterCookieConsent {
   bool _hasConsent = false;
 
   /// Controls if banner should be shown
-  bool _showBanner = false;
+  bool _showBanner = true;
 
   /// Tracks initialization state
   bool _isInitialized = false;
@@ -119,8 +119,8 @@ class FlutterCookieConsent {
   /// Throws an exception if saving fails.
   Future<void> savePreferences(Map<String, bool> preferences) async {
     try {
-      _cookiePreferences = preferences;
-      await _platform.saveCookiePreferences(preferences);
+      _cookiePreferences = Map<String, bool>.from(preferences);
+      await _platform.saveCookiePreferences(_cookiePreferences);
       _hasConsent = true;
       _showBanner = false;
       _bannerVisibilityNotifier.value = false;
@@ -136,7 +136,8 @@ class FlutterCookieConsent {
   bool get hasConsent => _hasConsent;
 
   /// Returns current cookie preferences
-  Map<String, bool> get preferences => Map.from(_cookiePreferences);
+  Map<String, bool> get preferences =>
+      Map<String, bool>.from(_cookiePreferences);
 
   /// Returns whether banner should be shown
   bool get shouldShowBanner => _showBanner;
