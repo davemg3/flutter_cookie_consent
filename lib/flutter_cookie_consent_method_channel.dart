@@ -1,58 +1,39 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 import 'flutter_cookie_consent_platform_interface.dart';
 
 /// Platform-specific implementation of [FlutterCookieConsentPlatform] for mobile platforms.
 ///
-/// This implementation uses method channels to communicate with native code
-/// for storing and retrieving cookie preferences.
+/// This implementation uses shared_preferences to store and retrieve cookie preferences.
 class MethodChannelFlutterCookieConsent extends FlutterCookieConsentPlatform {
-  /// The method channel used to interact with the native platform.
-  final _methodChannel = const MethodChannel('flutter_cookie_consent');
+  static const String _prefsKey = 'flutter_cookie_consent_preferences';
 
-  /// Retrieves cookie preferences from native platform storage.
-  ///
-  /// Handles various platform-specific errors and returns null if preferences
-  /// cannot be retrieved.
+  /// Retrieves cookie preferences from shared preferences.
   @override
   Future<Map<String, dynamic>?> getCookiePreferences() async {
     try {
-      final preferences = await _methodChannel
-          .invokeMethod<Map<dynamic, dynamic>>('getCookiePreferences');
-      return preferences?.cast<String, dynamic>();
-    } on PlatformException catch (e) {
-      debugPrint('Error getting cookie preferences: ${e.message}');
-      if (e.code == 'not_implemented') {
-        debugPrint('Method not implemented on the native platform');
-      } else if (e.code == 'storage_error') {
-        debugPrint('Error accessing storage on the native platform');
+      final prefs = await SharedPreferences.getInstance();
+      final preferencesJson = prefs.getString(_prefsKey);
+      if (preferencesJson == null) {
+        return {};
       }
-      return null;
+      return json.decode(preferencesJson) as Map<String, dynamic>;
     } catch (e) {
-      debugPrint('Unexpected error getting cookie preferences: $e');
+      debugPrint('Error getting cookie preferences: $e');
       return null;
     }
   }
 
-  /// Saves cookie preferences to native platform storage.
-  ///
-  /// Throws an exception if saving fails, with detailed error information
-  /// about the failure.
+  /// Saves cookie preferences to shared preferences.
   @override
   Future<void> saveCookiePreferences(Map<String, dynamic> preferences) async {
     try {
-      await _methodChannel.invokeMethod('saveCookiePreferences', preferences);
-    } on PlatformException catch (e) {
-      debugPrint('Error saving cookie preferences: ${e.message}');
-      if (e.code == 'not_implemented') {
-        debugPrint('Method not implemented on the native platform');
-      } else if (e.code == 'storage_error') {
-        debugPrint('Error accessing storage on the native platform');
-      }
-      rethrow;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_prefsKey, json.encode(preferences));
     } catch (e) {
-      debugPrint('Unexpected error saving cookie preferences: $e');
+      debugPrint('Error saving cookie preferences: $e');
       rethrow;
     }
   }
