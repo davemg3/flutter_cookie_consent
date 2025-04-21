@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'flutter_cookie_consent_method_channel.dart';
+import 'flutter_cookie_consent_web.dart';
 
 /// Platform interface for cookie consent functionality.
 ///
@@ -12,12 +14,19 @@ abstract class FlutterCookieConsentPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static FlutterCookieConsentPlatform _instance =
-      MethodChannelFlutterCookieConsent();
+  static FlutterCookieConsentPlatform _instance = _getPlatformImplementation();
+
+  static FlutterCookieConsentPlatform _getPlatformImplementation() {
+    if (kIsWeb) {
+      return FlutterCookieConsentWeb();
+    }
+    return MethodChannelFlutterCookieConsent();
+  }
 
   /// The default instance of [FlutterCookieConsentPlatform] to use.
   ///
-  /// Defaults to [MethodChannelFlutterCookieConsent].
+  /// Defaults to [MethodChannelFlutterCookieConsent] for mobile platforms
+  /// and [FlutterCookieConsentWeb] for web platform.
   static FlutterCookieConsentPlatform get instance => _instance;
 
   /// Platform-specific implementations should set this with their own
