@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-04-21
+
+### Added
+- Added shared_preferences support for mobile platforms (Android/iOS)
+- Improved storage implementation for cookie preferences
+
+### Changed
+- Updated platform support information in README
+- Improved documentation and examples
+
+### Fixed
+- Fixed cookie preferences persistence on mobile platforms
+- Fixed platform-specific storage implementation
+
 ## [1.0.0] - 2025-04-18
 
 ### Added
