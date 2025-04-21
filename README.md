@@ -14,9 +14,6 @@ A Flutter plugin for displaying cookie consent banners and managing cookie prefe
 - Settings dialog for detailed cookie preferences
 - Persistent storage of user preferences
 - Web platform implementation
-- Dark mode support
-- Localization support
-- Customizable animations
 - Accessibility support
 
 ## Platform Support
