@@ -1,6 +1,6 @@
 name: flutter_cookie_consent
 description: "A Flutter package for implementing GDPR-compliant cookie consent banners and privacy preferences."
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/redhotsixbull/flutter_cookie_consent
 repository: https://github.com/redhotsixbull/flutter_cookie_consent.git
 documentation: https://github.com/redhotsixbull/flutter_cookie_consent#readme
@@ -13,7 +13,7 @@ topics:
 
 environment:
   sdk: ^3.6.0
-  flutter: '>=3.3.0'
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:
