@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Improved web platform implementation to use localStorage directly
 
 ## [1.0.1] - 2025-04-21
 
