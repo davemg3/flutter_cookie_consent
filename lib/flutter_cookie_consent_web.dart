@@ -4,7 +4,7 @@
 // ignore: avoid_web_libraries_in_flutter
 
 import 'dart:convert';
-import 'dart:html' as html;
+import 'package:web/web.dart' as web;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -24,9 +24,9 @@ class FlutterCookieConsentWeb extends FlutterCookieConsentPlatform {
   @override
   Future<Map<String, dynamic>?> getCookiePreferences() async {
     try {
-      final storage = html.window.localStorage;
+      final storage = web.window.localStorage;
 
-      final preferences = storage[_storageKey];
+      final preferences = storage.getItem(_storageKey);
       if (preferences == null) {
         debugPrint('No cookie preferences found in local storage');
         return null;
@@ -49,11 +49,11 @@ class FlutterCookieConsentWeb extends FlutterCookieConsentPlatform {
   @override
   Future<void> saveCookiePreferences(Map<String, dynamic> preferences) async {
     try {
-      final storage = html.window.localStorage;
+      final storage = web.window.localStorage;
 
       try {
         final jsonString = const JsonEncoder().convert(preferences);
-        storage[_storageKey] = jsonString;
+        storage.setItem(_storageKey, jsonString);
       } on Exception catch (e) {
         debugPrint('Error converting preferences to JSON: $e');
         rethrow;
