@@ -95,7 +95,7 @@ class FlutterCookieConsent {
 
     try {
       final savedPreferences = await _platform.getCookiePreferences();
-      if (savedPreferences != null) {
+      if (savedPreferences != null && savedPreferences!.isEmpty()) {
         _cookiePreferences = Map<String, bool>.from(savedPreferences);
         _hasConsent = true;
         _showBanner = false;
