@@ -46,18 +46,15 @@ enum BannerPosition {
 /// }
 /// ```
 class FlutterCookieConsent {
-  static final FlutterCookieConsent _instance =
-      FlutterCookieConsent._internal();
+  static final FlutterCookieConsent _instance = FlutterCookieConsent._internal();
   factory FlutterCookieConsent() => _instance;
   FlutterCookieConsent._internal();
 
   /// Platform-specific implementation for cookie consent
-  final FlutterCookieConsentPlatform _platform =
-      FlutterCookieConsentPlatform.instance;
+  final FlutterCookieConsentPlatform _platform = FlutterCookieConsentPlatform.instance;
 
   /// Notifier for tracking banner visibility state
-  final ValueNotifier<bool> _bannerVisibilityNotifier =
-      ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _bannerVisibilityNotifier = ValueNotifier<bool>(true);
 
   /// Default cookie preferences with essential cookies enabled by default
   Map<String, bool> _cookiePreferences = {
@@ -95,7 +92,7 @@ class FlutterCookieConsent {
 
     try {
       final savedPreferences = await _platform.getCookiePreferences();
-      if (savedPreferences != null && savedPreferences!.isEmpty()) {
+      if (savedPreferences != null && savedPreferences!.isNotEmpty) {
         _cookiePreferences = Map<String, bool>.from(savedPreferences);
         _hasConsent = true;
         _showBanner = false;
@@ -136,8 +133,7 @@ class FlutterCookieConsent {
   bool get hasConsent => _hasConsent;
 
   /// Returns current cookie preferences
-  Map<String, bool> get preferences =>
-      Map<String, bool>.from(_cookiePreferences);
+  Map<String, bool> get preferences => Map<String, bool>.from(_cookiePreferences);
 
   /// Returns whether banner should be shown
   bool get shouldShowBanner => _showBanner;
